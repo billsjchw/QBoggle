@@ -41,7 +41,7 @@ void WordListWidget::addScore(int score)
     this->scoreLabel->setText(QString::number(this->score));
 }
 
-void WordListWidget::addWord(QString word)
+void WordListWidget::addWord(const QString &word)
 {
     this->words.append(word);
     this->wordTable->addWord(word);
@@ -53,6 +53,6 @@ void WordListWidget::reset()
     this->words.clear();
 }
 
-bool WordListWidget::contains(QString word) {
+bool WordListWidget::contains(const QString &word) {
     return words.contains(word.toLower());
 }

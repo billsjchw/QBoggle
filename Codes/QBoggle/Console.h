@@ -19,7 +19,7 @@ public slots:
     void write(QString msg);
 
 protected:
-    virtual void keyPressEvent(QKeyEvent *event) override;
+    virtual void keyPressEvent(QKeyEvent *event);
 };
 
 #endif // CONSOLE_H

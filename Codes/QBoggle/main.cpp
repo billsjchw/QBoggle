@@ -11,6 +11,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     // uint seed = QDateTime::currentDateTime().toTime_t();
     uint seed = 1568391688;
+    // uint seed = 1568470650;
     qDebug() << seed;
     qsrand(seed);
 

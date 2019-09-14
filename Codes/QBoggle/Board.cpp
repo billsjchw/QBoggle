@@ -37,6 +37,7 @@ Board::Board(QWidget *parent, int size, const QString *cubeLetters) : QWidget(pa
     for (int i = 0; i < size; ++i) {
         for (int j = 0; j < size; ++j) {
             this->cubes[index(i, j)] = new Cube(this);
+            connect(this->cubes[index(i, j)], &Cube::clicked, this, &Board::handleCubeClicked);
             layout->addWidget(this->cubes[index(i, j)], i, j, Qt::AlignmentFlag::AlignCenter);
         }
     }
@@ -68,6 +69,17 @@ bool Board::contains(const QString & word) {
                 }
             }
     return false;
+}
+
+QSet<QString> Board::allWords(const Lexicon *lexicon) {
+    QSet<QString> wordSet;
+    for (int i = 0; i < size; ++i)
+        for (int j = 0; j < size; ++j) {
+            QList<QPoint> path;
+            path.append(QPoint(i, j));
+            findAllWords(path, wordSet, lexicon);
+        }
+    return wordSet;
 }
 
 void Board::shake()
@@ -108,6 +120,67 @@ void Board::showPath(const QList<QPoint> &path) {
         cubes[index(p)]->select();
     repaint();
     QThread::msleep(800);
+     for (QPoint p : path)
+         cubes[index(p)]->cancel();
+}
+
+void Board::findAllWords(QList<QPoint> &path, QSet<QString> &wordSet, const Lexicon *lexicon) {
+    QString word;
     for (QPoint p : path)
+        word.append(letters[index(p)].front());
+    if (!lexicon->containsPrefix(word.toStdString()))
+        return;
+    if (lexicon->contains(word.toStdString()))
+        wordSet.insert(word);
+    for (int di : {-1, 0, 1})
+        for (int dj : {-1, 0, 1})
+            if (di || dj) {
+                QPoint next = path.back() + QPoint(di, dj);
+                if (inside(next) && !path.contains(next)) {
+                    path.append(next);
+                    findAllWords(path, wordSet, lexicon);
+                    path.removeLast();
+                }
+            }
+}
+
+void Board::mousePressEvent(QMouseEvent *event) {
+    if (event->button() == Qt::RightButton)
+        clearPathSelected();
+}
+
+void Board::clearPathSelected() {
+    for (QPoint p : pathSelected)
         cubes[index(p)]->cancel();
+    pathSelected.clear();
+}
+
+bool Board::pathSelectedExtendable() {
+    for (int di : {-1, 0, 1})
+        for (int dj : {-1, 0, 1}) {
+            QPoint next = pathSelected.back() + QPoint(di, dj);
+            if (inside(next) && !pathSelected.contains(next))
+                return true;
+        }
+    return false;
+}
+
+void Board::handleCubeClicked() {
+    Cube *cubeClicked = dynamic_cast<Cube *>(sender());
+    QPoint pos;
+    for (int i = 0; i < size; ++i)
+        for (int j = 0; j < size; ++j)
+            if (cubes[index(i, j)] == cubeClicked)
+                pos = QPoint(i, j);
+    QPoint delta(0, 0);
+    if (!pathSelected.empty())
+        delta = pos - pathSelected.back();
+    if (!pathSelected.contains(pos) && qAbs(delta.x()) <= 1 && qAbs(delta.y()) <= 1) {
+        cubeClicked->select();
+        pathSelected.append(pos);
+        QString newWord;
+        for (QPoint p : pathSelected)
+            newWord.append(letters[index(p)].front());
+        newWordSelected(newWord);
+    }
 }

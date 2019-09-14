@@ -7,31 +7,31 @@
 
 Cube::Cube(QWidget *parent) : QWidget(parent)
 {
-    label = new QLabel();
-    label->setText("");
-    label->setAlignment(Qt::AlignCenter);
-    QFont font = label->font();
+    button = new QPushButton();
+    button->setText("");
+    QFont font = button->font();
     font.setPointSize(20);
-    label->setFont(font);
+    button->setFont(font);
     cancel();
+    connect(button, &QPushButton::clicked, this, &Cube::clicked);
 
     this->setFixedSize(75, 75);
 
     QHBoxLayout *layout = new QHBoxLayout();
-    layout->addWidget(label);
+    layout->addWidget(button);
     setLayout(layout);
 }
 
 void Cube::setLetter(QChar l)
 {
-    label->setText(l);
+    button->setText(l);
 }
 
 void Cube::select() {
-    label->setStyleSheet("background-color: black; color: white; border-radius: 15px; border: 2px solid");
+    button->setStyleSheet("background-color: black; color: white; border-radius: 15px; border: 2px solid");
 }
 
 void Cube::cancel() {
-    label->setStyleSheet("background-color: white; color: black; border-radius: 15px; border: 2px solid");
+    button->setStyleSheet("background-color: white; color: black; border-radius: 15px; border: 2px solid");
 }
 

@@ -14,10 +14,11 @@ class BoggleWindow : public QMainWindow
     Q_OBJECT
 public:
     BoggleWindow(QWidget *parent = nullptr);
-    ~BoggleWindow();
+    virtual ~BoggleWindow() override;
 
 public slots:
     void handleNewLine(QString newLine);
+    void handleNewWord(QString newWord);
 
 private:
     WordListWidget *me;

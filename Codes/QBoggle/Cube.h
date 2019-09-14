@@ -1,7 +1,7 @@
 #ifndef CUBE_H
 #define CUBE_H
 
-#include <QLabel>
+#include <QPushButton>
 #include <QWidget>
 
 class Cube : public QWidget
@@ -14,11 +14,12 @@ public:
     void cancel();
 
 signals:
+    void clicked();
 
 public slots:
 
 private:
-    QLabel *label;
+    QPushButton *button;
 };
 
 #endif // CUBE_H

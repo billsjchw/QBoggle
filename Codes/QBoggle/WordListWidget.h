@@ -13,9 +13,9 @@ class WordListWidget : public QWidget
 public:
     explicit WordListWidget(QWidget *parent = nullptr, QString label = "");
     void addScore(int s);
-    void addWord(QString word);
+    void addWord(const QString &word);
     void reset();
-    bool contains(QString word);
+    bool contains(const QString &word);
 signals:
 
 public slots:
