@@ -24,7 +24,10 @@ Cube::Cube(QWidget *parent) : QWidget(parent)
 
 void Cube::setLetter(QChar l)
 {
-    button->setText(l);
+    if (l == 'Q')
+        button->setText("Qu");
+    else
+        button->setText(l);
 }
 
 void Cube::select() {

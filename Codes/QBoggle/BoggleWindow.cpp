@@ -15,6 +15,7 @@ BoggleWindow::BoggleWindow(QWidget *parent)
 {
     this->setWindowTitle("QBoggle!");
     this->setFixedSize(BOGGLE_WINDOW_WIDTH, BOGGLE_WINDOW_HEIGHT);
+    this->setAttribute(Qt::WA_DeleteOnClose);
 
     me = new WordListWidget(this, "Me");
     computer = new WordListWidget(this, "Computer");

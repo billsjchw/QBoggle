@@ -41,6 +41,8 @@ private:
     inline int index(int i, int j) { return i * size + j; }
     inline int index(QPoint p) { return index(p.x(), p.y()); }
     inline bool inside(QPoint p) { return p.x() >= 0 && p.x() < size && p.y() >= 0 && p.y() < size; }
+    static bool compactQu(QString &word);
+    static void extendQ(QString &word);
 
     static const QString STANDARD_CUBES[16];
     static const QString BIG_BOGGLE_CUBES[25];

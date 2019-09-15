@@ -58,12 +58,15 @@ Board::~Board()
 }
 
 bool Board::contains(const QString & word) {
+    QString wordCompacted = word;
+    if (!compactQu(wordCompacted))
+        return false;
     for (int i = 0; i < size; ++i)
         for (int j = 0; j < size; ++j)
-            if (letters[index(i, j)].front() == word.front().toUpper()) {
+            if (letters[index(i, j)].front() == wordCompacted.front().toUpper()) {
                 QList<QPoint> path;
                 path.append(QPoint(i, j));
-                if (findPath(word, path)) {
+                if (findPath(wordCompacted, path)) {
                     showPath(path);
                     return true;
                 }
@@ -92,10 +95,10 @@ void Board::shake()
             afterShake.append(letters[i].at((j + k) % 6));
         letters[i] = afterShake;
     }
-    for (int i = 0; i < size * size; ++i) {
-        int k = i + qrand() % (size * size - i);
-        qSwap(letters[i], letters[k]);
-    }
+//    for (int i = 0; i < size * size; ++i) {
+//        int k = i + qrand() % (size * size - i);
+//        qSwap(letters[i], letters[k]);
+//    }
 }
 
 bool Board::findPath(const QString & word, QList<QPoint> &path) {
@@ -128,6 +131,7 @@ void Board::findAllWords(QList<QPoint> &path, QSet<QString> &wordSet, const Lexi
     QString word;
     for (QPoint p : path)
         word.append(letters[index(p)].front());
+    extendQ(word);
     if (!lexicon->containsPrefix(word.toStdString()))
         return;
     if (lexicon->contains(word.toStdString()))
@@ -147,6 +151,25 @@ void Board::findAllWords(QList<QPoint> &path, QSet<QString> &wordSet, const Lexi
 void Board::mousePressEvent(QMouseEvent *event) {
     if (event->button() == Qt::RightButton)
         clearPathSelected();
+}
+
+bool Board::compactQu(QString &word) {
+    QString result;
+    for (int i = 0; i < word.length(); ++i)
+        if (word.at(i).toUpper() != 'Q')
+            result.append(word.at(i));
+        else if (i + 1 == word.length() || word.at(i + 1).toLower() != 'u')
+            return false;
+        else {
+            ++i;
+            result.append('Q');
+        }
+    word = result;
+    return true;
+}
+
+void Board::extendQ(QString &word) {
+    word.replace('Q', "Qu", Qt::CaseInsensitive);
 }
 
 void Board::clearPathSelected() {
@@ -181,6 +204,7 @@ void Board::handleCubeClicked() {
         QString newWord;
         for (QPoint p : pathSelected)
             newWord.append(letters[index(p)].front());
+        extendQ(newWord);
         newWordSelected(newWord);
     }
 }
