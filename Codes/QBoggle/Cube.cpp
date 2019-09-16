@@ -16,7 +16,7 @@ Cube::Cube(QWidget *parent) : QWidget(parent)
 
     this->setFixedSize(75, 75);
 
-    QHBoxLayout *layout = new QHBoxLayout();
+    QHBoxLayout *layout = new QHBoxLayout(this);
     layout->addWidget(button);
     setLayout(layout);
 }

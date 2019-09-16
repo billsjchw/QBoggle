@@ -101,16 +101,16 @@ void BoggleWindow::handleNewWord(QString newWord) {
 }
 
 void BoggleWindow::keyPressEvent(QKeyEvent *event) {
-    if (event->isAutoRepeat())
+    if (isHidden())
         return;
-    else if (event->key() == Qt::Key_F1) {
-        close();
+    if (event->key() == Qt::Key_F1) {
         BoggleWindow *boggleWindow = new BoggleWindow(letters);
         boggleWindow->show();
-    } else if (event->key() == Qt::Key_F2) {
         close();
+    } else if (event->key() == Qt::Key_F2) {
         ConfigurationWindow *configurationWindow = new ConfigurationWindow;
         configurationWindow->show();
+        close();
     }
 }
 

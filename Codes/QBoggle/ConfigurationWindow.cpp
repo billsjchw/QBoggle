@@ -37,15 +37,15 @@ void ConfigurationWindow::startWithCustom() {
     if (!cubeLetters) {
         QMessageBox::warning(this, "Wrong Input", "More letters are needed.", QMessageBox::Ok, QMessageBox::Ok);
     } else {
-        close();
         BoggleWindow *boggleWindow = new BoggleWindow(cubeLetters);
         boggleWindow->show();
+        close();
     }
     delete[] cubeLetters;
 }
 
 void ConfigurationWindow::startWithDefault() {
-    close();
     BoggleWindow *boggleWindow = new BoggleWindow;
     boggleWindow->show();
+    close();
 }
