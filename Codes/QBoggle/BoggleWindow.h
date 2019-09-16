@@ -5,7 +5,6 @@
 #include "Console.h"
 #include "WordListWidget.h"
 #include "lexicon.h"
-
 #include <QMainWindow>
 #include <QString>
 
@@ -26,8 +25,8 @@ private:
     Board *board;
     Console *console;
     Lexicon *lexicon;
-    static const int BOGGLE_WINDOW_WIDTH = 800;
-    static const int BOGGLE_WINDOW_HEIGHT = 600;
+    static const int WIDTH = 800;
+    static const int HEIGHT = 600;
     static const int BASIC_WORD_LENGTH = 4;
 };
 

@@ -1,5 +1,4 @@
 #include "Cube.h"
-
 #include <QHBoxLayout>
 #include <QPalette>
 #include <QStyleOption>

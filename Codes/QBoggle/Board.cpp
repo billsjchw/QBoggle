@@ -1,6 +1,5 @@
 #include "Board.h"
 #include "Cube.h"
-
 #include <QGridLayout>
 #include <QString>
 #include <QtGlobal>
@@ -31,7 +30,7 @@ Board::Board(QWidget *parent, int size, const QString *cubeLetters) : QWidget(pa
         this->letters[i] = cubeLetters[i];
     shake();
 
-    QGridLayout *layout = new QGridLayout();
+    QGridLayout *layout = new QGridLayout(this);
     layout->setMargin(20);
     layout->setSpacing(10);
     for (int i = 0; i < size; ++i) {

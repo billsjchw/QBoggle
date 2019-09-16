@@ -25,6 +25,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+    BoardEdit.cpp \
     ConfigurationWindow.cpp \
     CubeEdit.cpp \
         main.cpp \
@@ -37,6 +38,7 @@ SOURCES += \
     lexicon.cpp
 
 HEADERS += \
+    BoardEdit.h \
         BoggleWindow.h \
     ConfigurationWindow.h \
     CubeEdit.h \
