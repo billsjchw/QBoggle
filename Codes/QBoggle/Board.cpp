@@ -4,24 +4,8 @@
 #include <QString>
 #include <QtGlobal>
 #include <QThread>
-#include <QDebug>
 
-const QString Board::STANDARD_CUBES[16]  = {
-        "AAEEGN", "ABBJOO", "ACHOPS", "AFFKPS",
-        "AOOTTW", "CIMOTU", "DEILRX", "DELRVY",
-        "DISTTY", "EEGHNW", "EEINSU", "EHRTVW",
-        "EIOSST", "ELRTTY", "HIMNQU", "HLNNRZ"
-};
-
-const QString Board::BIG_BOGGLE_CUBES[25]  = {
-        "AAAFRS", "AAEEEE", "AAFIRS", "ADENNN", "AEEEEM",
-        "AEEGMU", "AEGMNN", "AFIRSY", "BJKQXZ", "CCNSTW",
-        "CEIILT", "CEILPT", "CEIPST", "DDLNOR", "DDHNOT",
-        "DHHLOR", "DHLNOR", "EIIITT", "EMOTTT", "ENSSSU",
-        "FIPRSY", "GORRVW", "HIPRRY", "NOOTUW", "OOOTTU"
-};
-
-Board::Board(QWidget *parent, int size, const QString *cubeLetters) : QWidget(parent)
+Board::Board(int size, const QString *cubeLetters, QWidget *parent) : QWidget(parent)
 {
     this->size = size;
     this->cubes = new Cube*[size * size];
@@ -94,10 +78,10 @@ void Board::shake()
             afterShake.append(letters[i].at((j + k) % 6));
         letters[i] = afterShake;
     }
-//    for (int i = 0; i < size * size; ++i) {
-//        int k = i + qrand() % (size * size - i);
-//        qSwap(letters[i], letters[k]);
-//    }
+    for (int i = 0; i < size * size; ++i) {
+        int k = i + qrand() % (size * size - i);
+        qSwap(letters[i], letters[k]);
+    }
 }
 
 bool Board::findPath(const QString & word, QList<QPoint> &path) {

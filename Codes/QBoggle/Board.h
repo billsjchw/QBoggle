@@ -14,7 +14,7 @@ class Board : public QWidget
 {
     Q_OBJECT
 public:
-    explicit Board(QWidget *parent = nullptr, int size = 5, const QString *cubeLetters = BIG_BOGGLE_CUBES);
+    explicit Board(int size, const QString *cubeLetters, QWidget *parent = nullptr);
     virtual ~Board();
     bool contains(const QString &word);
     QSet<QString> allWords(const Lexicon *lexicon);
@@ -43,9 +43,6 @@ private:
     inline bool inside(QPoint p) { return p.x() >= 0 && p.x() < size && p.y() >= 0 && p.y() < size; }
     static bool compactQu(QString &word);
     static void extendQ(QString &word);
-
-    static const QString STANDARD_CUBES[16];
-    static const QString BIG_BOGGLE_CUBES[25];
 };
 
 #endif // BOARD_H

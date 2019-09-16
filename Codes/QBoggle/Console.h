@@ -15,7 +15,6 @@ signals:
     void newLineWritten(QString newLine);
 
 public slots:
-//    void clear();
     void write(QString msg);
 
 protected:

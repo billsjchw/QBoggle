@@ -7,11 +7,6 @@ Console::Console(QWidget *parent) : QTextEdit(parent)
 {
 }
 
-//void Console::clear()
-//{
-//    this->clear();
-//}
-
 void Console::write(QString msg)
 {
     this->append(msg);

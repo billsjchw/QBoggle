@@ -1,4 +1,5 @@
 #include "BoggleWindow.h"
+#include "ConfigurationWindow.h"
 #include "lexicon.h"
 #include <QFile>
 #include <QHBoxLayout>
@@ -6,19 +7,38 @@
 #include <iostream>
 #include <QThread>
 #include <QSet>
-#include <QString>
-#include <QDebug>
+#include <QKeyEvent>
+#include <QMessageBox>
 
-BoggleWindow::BoggleWindow(QWidget *parent)
+const QString BoggleWindow::STANDARD_CUBES[16]  = {
+        "AAEEGN", "ABBJOO", "ACHOPS", "AFFKPS",
+        "AOOTTW", "CIMOTU", "DEILRX", "DELRVY",
+        "DISTTY", "EEGHNW", "EEINSU", "EHRTVW",
+        "EIOSST", "ELRTTY", "HIMNQU", "HLNNRZ"
+};
+
+const QString BoggleWindow::BIG_BOGGLE_CUBES[25]  = {
+        "AAAFRS", "AAEEEE", "AAFIRS", "ADENNN", "AEEEEM",
+        "AEEGMU", "AEGMNN", "AFIRSY", "BJKQXZ", "CCNSTW",
+        "CEIILT", "CEILPT", "CEIPST", "DDLNOR", "DDHNOT",
+        "DHHLOR", "DHLNOR", "EIIITT", "EMOTTT", "ENSSSU",
+        "FIPRSY", "GORRVW", "HIPRRY", "NOOTUW", "OOOTTU"
+};
+
+BoggleWindow::BoggleWindow(const QString *cubeLetters, QWidget *parent)
     : QMainWindow(parent)
 {
     this->setWindowTitle("QBoggle!");
     this->setFixedSize(WIDTH, HEIGHT);
     this->setAttribute(Qt::WA_DeleteOnClose);
 
+    this->letters = new QString[BOARD_SIZE * BOARD_SIZE];
+    for (int i = 0; i < BOARD_SIZE * BOARD_SIZE; ++i)
+        this->letters[i] = cubeLetters[i];
+
     me = new WordListWidget(this, "Me");
     computer = new WordListWidget(this, "Computer");
-    board = new Board(this);
+    board = new Board(BOARD_SIZE, letters, this);
     console = new Console(this);
 
     me->setGeometry(20, 20, 230, 300);
@@ -46,9 +66,12 @@ BoggleWindow::BoggleWindow(QWidget *parent)
 BoggleWindow::~BoggleWindow()
 {
     delete lexicon;
+    delete [] letters;
 }
 
 void BoggleWindow::handleNewLine(QString newLine) {
+    if (!isPureLetters(newLine))
+        return;
     board->clearPathSelected();
     repaint();
     if (!newLine.length()) {
@@ -56,9 +79,9 @@ void BoggleWindow::handleNewLine(QString newLine) {
         board->setEnabled(false);
         QSet<QString> wordSet = board->allWords(lexicon);
         for (const QString & word : wordSet)
-            if (word.length() >= BASIC_WORD_LENGTH && !me->contains(word.toLower())) {
-                computer->addWord(word.toLower());
-                computer->addScore(word.length() - BASIC_WORD_LENGTH + 1);
+           if (word.length() >= BASIC_WORD_LENGTH && !me->contains(word.toLower())) {
+               computer->addWord(word.toLower());
+               computer->addScore(word.length() - BASIC_WORD_LENGTH + 1);
             }
     } else if (!me->contains(newLine) && newLine.length() >= BASIC_WORD_LENGTH && lexicon->contains(newLine.toStdString()) && board->contains(newLine)) {
         me->addWord(newLine.toLower());
@@ -75,4 +98,25 @@ void BoggleWindow::handleNewWord(QString newWord) {
         board->clearPathSelected();
     } else if (!board->pathSelectedExtendable())
         board->clearPathSelected();
+}
+
+void BoggleWindow::keyPressEvent(QKeyEvent *event) {
+    if (event->isAutoRepeat())
+        return;
+    else if (event->key() == Qt::Key_F1) {
+        close();
+        BoggleWindow *boggleWindow = new BoggleWindow(letters);
+        boggleWindow->show();
+    } else if (event->key() == Qt::Key_F2) {
+        close();
+        ConfigurationWindow *configurationWindow = new ConfigurationWindow;
+        configurationWindow->show();
+    }
+}
+
+bool BoggleWindow::isPureLetters(const QString &s) {
+    for (int i = 0; i < s.length(); ++i)
+        if (!s.at(i).isLetter())
+            return false;
+    return true;
 }

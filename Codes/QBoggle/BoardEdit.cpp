@@ -15,5 +15,15 @@ BoardEdit::BoardEdit(QWidget *parent, int size): QWidget(parent) {
 }
 
 BoardEdit::~BoardEdit() {
-    delete cubeEdits;
+    delete [] cubeEdits;
+}
+
+QString * BoardEdit::cubeLetters() {
+    for (int i = 0; i < size * size; ++i)
+        if (cubeEdits[i]->text().length() < 6)
+            return nullptr;
+    QString *result = new QString[size * size];
+    for (int i = 0; i < size * size; ++i)
+        result[i] = cubeEdits[i]->text();
+    return result;
 }
