@@ -61,7 +61,7 @@ static void findAllWords(std::vector<Subscript> &path, std::set<std::string> &wo
             }
 }
 
-int wordsCount(const Board &board, const Lexicon &lexicon) {
+static std::set<std::string> allWords(const Board &board, const Lexicon &lexicon) {
     std::set<std::string> wordSet;
     for (int i = 0; i < SIZE; ++i)
         for (int j = 0; j < SIZE; ++j) {
@@ -69,8 +69,28 @@ int wordsCount(const Board &board, const Lexicon &lexicon) {
             path.push_back(Subscript(i, j));
             findAllWords(path, wordSet, board, lexicon);
         }
-    for (const std::string &word : wordSet) {
-        std::cout << word << std::endl;
-    }
-    return wordSet.size();
+    return wordSet;
+}
+
+int wordsCount(const Board &board, const Lexicon &lexicon) {
+    return allWords(board, lexicon).size();
+}
+
+int maxWordLength(const Board &board, const Lexicon &lexicon) {
+    std::set<std::string> wordSet = allWords(board, lexicon);
+    int result = 0;
+    for (const std::string &word : wordSet)
+        if (word.length() > result)
+            result = word.length();
+    return result;
+}
+
+int score(const Board &board, const Lexicon &lexicon) {
+    const int basicWordLength = 4;
+    std::set<std::string> wordSet = allWords(board, lexicon);
+    int result = 0;
+    for (const std::string &word : wordSet)
+        if (word.length() > basicWordLength)
+            result += word.length() - basicWordLength + 1;
+    return result;
 }

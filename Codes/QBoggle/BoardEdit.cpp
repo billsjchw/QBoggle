@@ -24,6 +24,6 @@ QString * BoardEdit::cubeLetters() {
             return nullptr;
     QString *result = new QString[size * size];
     for (int i = 0; i < size * size; ++i)
-        result[i] = cubeEdits[i]->text();
+        result[i] = cubeEdits[i]->text().toUpper();
     return result;
 }

@@ -87,8 +87,8 @@ void Board::shake()
 bool Board::findPath(const QString & word, QList<QPoint> &path) {
     if (path.length() == word.length())
         return true;
-    for (int di : {-1, 0, 1})
-        for (int dj : {-1, 0, 1})
+    for (int di : { -1, 0, 1 })
+        for (int dj : { -1, 0, 1 })
             if (di || dj) {
                 QPoint next = path.back() + QPoint(di, dj);
                 if (inside(next) && !path.contains(next) && letters[index(next)].front() ==  word.at(path.length()).toUpper()) {
@@ -119,8 +119,8 @@ void Board::findAllWords(QList<QPoint> &path, QSet<QString> &wordSet, const Lexi
         return;
     if (lexicon->contains(word.toStdString()))
         wordSet.insert(word);
-    for (int di : {-1, 0, 1})
-        for (int dj : {-1, 0, 1})
+    for (int di : { -1, 0, 1 })
+        for (int dj : { -1, 0, 1 })
             if (di || dj) {
                 QPoint next = path.back() + QPoint(di, dj);
                 if (inside(next) && !path.contains(next)) {
@@ -162,8 +162,8 @@ void Board::clearPathSelected() {
 }
 
 bool Board::pathSelectedExtendable() {
-    for (int di : {-1, 0, 1})
-        for (int dj : {-1, 0, 1}) {
+    for (int di : { -1, 0, 1 })
+        for (int dj : { -1, 0, 1 }) {
             QPoint next = pathSelected.back() + QPoint(di, dj);
             if (inside(next) && !pathSelected.contains(next))
                 return true;
