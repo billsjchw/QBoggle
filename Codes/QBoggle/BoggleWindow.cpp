@@ -103,7 +103,7 @@ void BoggleWindow::handleNewWord(QString newWord) {
 void BoggleWindow::keyPressEvent(QKeyEvent *event) {
     if (isHidden())
         return;
-    if (event->key() == Qt::Key_F1) {
+    else if (event->key() == Qt::Key_F1) {
         BoggleWindow *boggleWindow = new BoggleWindow(letters);
         boggleWindow->show();
         close();
