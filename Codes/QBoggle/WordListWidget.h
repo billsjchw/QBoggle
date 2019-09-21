@@ -6,6 +6,7 @@
 #include <QWidget>
 #include <QLabel>
 #include <QString>
+#include <QList>
 
 class WordListWidget : public QWidget
 {
@@ -14,6 +15,7 @@ public:
     explicit WordListWidget(QWidget *parent = nullptr, QString label = "");
     void addScore(int s);
     void addWord(const QString &word);
+    void addWords(const QList<QString> &words);
     void reset();
     bool contains(const QString &word);
 signals:

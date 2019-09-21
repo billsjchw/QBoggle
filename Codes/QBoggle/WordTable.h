@@ -11,6 +11,7 @@ class WordTable : public QTableWidget
 public:
     explicit WordTable(QWidget *parent = nullptr, int maxCol = 3);
     void addWord(QString word);
+    void resizeToContents();
     void reset() override;
 
 signals:

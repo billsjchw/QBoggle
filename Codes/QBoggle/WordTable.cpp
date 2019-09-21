@@ -23,6 +23,9 @@ void WordTable::addWord(QString word)
     }
     this->setItem(row, col, new QTableWidgetItem(word));
     col++;
+}
+
+void WordTable::resizeToContents() {
     this->resizeColumnsToContents();
     this->resizeRowsToContents();
 }

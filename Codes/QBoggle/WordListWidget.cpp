@@ -45,6 +45,14 @@ void WordListWidget::addWord(const QString &word)
 {
     this->words.append(word);
     this->wordTable->addWord(word);
+    this->wordTable->resizeToContents();
+}
+
+void WordListWidget::addWords(const QList<QString> &words) {
+    this->words.append(words);
+    for (const QString &word : words)
+        this->wordTable->addWord(word);
+    this->wordTable->resizeToContents();
 }
 
 void WordListWidget::reset()

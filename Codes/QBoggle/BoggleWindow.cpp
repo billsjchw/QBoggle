@@ -8,7 +8,7 @@
 #include <QThread>
 #include <QSet>
 #include <QKeyEvent>
-#include <QMessageBox>
+#include <QList>
 
 const QString BoggleWindow::STANDARD_CUBES[16]  = {
         "AAEEGN", "ABBJOO", "ACHOPS", "AFFKPS",
@@ -78,11 +78,15 @@ void BoggleWindow::handleNewLine(QString newLine) {
         console->setEnabled(false);
         board->setEnabled(false);
         QSet<QString> wordSet = board->allWords(lexicon);
+        QList<QString> words;
+        int score = 0;
         for (const QString & word : wordSet)
            if (word.length() >= BASIC_WORD_LENGTH && !me->contains(word.toLower())) {
-               computer->addWord(word.toLower());
-               computer->addScore(word.length() - BASIC_WORD_LENGTH + 1);
-            }
+               words.append(word.toLower());
+               score += word.length() - BASIC_WORD_LENGTH + 1;
+           }
+        computer->addWords(words);
+        computer->addScore(score);
     } else if (!me->contains(newLine) && newLine.length() >= BASIC_WORD_LENGTH && lexicon->contains(newLine.toStdString()) && board->contains(newLine)) {
         me->addWord(newLine.toLower());
         me->addScore(newLine.length() - BASIC_WORD_LENGTH + 1);
