@@ -90,7 +90,7 @@ int score(const Board &board, const Lexicon &lexicon) {
     std::set<std::string> wordSet = allWords(board, lexicon);
     int result = 0;
     for (const std::string &word : wordSet)
-        if (word.length() > basicWordLength)
+        if (word.length() >= basicWordLength)
             result += word.length() - basicWordLength + 1;
     return result;
 }
